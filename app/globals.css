@@ -5,25 +5,88 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #262626;
+  --background: #ededed;
+  --foreground: #202020;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #141414;
-    --foreground: #ededed;
+    --background: #ededed;
+    --foreground: #202020;
   }
 }
 
-body {
+body, html {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
+
 .title {
-  font-size: 13em;
+  font-size: 5em;
   font-family: 'Bree Serif', serif;
-  text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  color: #202020;
+  text-shadow: 
+    0.5px 0.5px 0 #FFD392, 
+    1.5px 1.5px 0 #FFD392, 
+    2.5px 2.5px 0 #FFD392, 
+    3.5px 3.5px 0 #FFD392, 
+    4.5px 4.5px 0 #FFD392;
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  text-align: center;
+}
+
+.background {
+  background: #f0f0f5;
+  background-image: -webkit-radial-gradient(top, circle cover, #ffffff 0%, #d0d0d5 80%);
+  background-image: -moz-radial-gradient(top, circle cover, #ffffff 0%, #d0d0d5 80%);
+  background-image: -o-radial-gradient(top, circle cover, #ffffff 0%, #d0d0d5 80%);
+  background-image: radial-gradient(top, circle cover, #ffffff 0%, #d0d0d5 80%);
+}
+
+.logotext {
+  font-family: 'Bree Serif', serif;
+  color: #202020;
+  text-shadow: 
+    0.0px 0.0px 0 #FFD392, 
+    0.3px 0.1px 0 #FFD392, 
+    0.6px 0.6px 0 #FFD392, 
+    0.9px 0.9px 0 #FFD392, 
+    1.2px 1.2px 0 #FFD392;
+}
+
+.start_button {
+  background-color: #202020;
+  color: #FFD392;
+  font-size: 1.2em;
+  font-family: 'Bree Serif', serif;
+  border-radius: 10px;
+}
+
+.startscroll {
+  font-size: 1.5em;
+  font-family: 'Bree Serif', serif;
+  color: #202020;
+  position: absolute;
+  top: 65%;
+  left: 42.0%;
+  text-align: center;
+  animation: bob 2s infinite;
+}
+
+@keyframes bob {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
