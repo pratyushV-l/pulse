@@ -9,7 +9,7 @@ export default function LoginSignup() {
   };
 
   const handleGitHubSignIn = () => {
-    signIn("github");
+    signIn("github", { redirect_uri: "https://pulsev1.me/" });
   };
 
   return (
