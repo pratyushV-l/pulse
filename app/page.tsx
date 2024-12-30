@@ -7,7 +7,7 @@ import Loading from "@/components/Loading";
 
 export default function Home() {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true); // Set initial loading state to true
 
   useEffect(() => {
     const handleRouteChange = () => {
@@ -17,7 +17,7 @@ export default function Home() {
     const handleRouteComplete = () => {
       setTimeout(() => {
         setLoading(false);
-      }, 5000);
+      }, 99000);
     };
 
     const originalPush = router.push;
@@ -41,6 +41,11 @@ export default function Home() {
       window.removeEventListener("mousedown", handleClick);
     };
   }, [router]);
+
+  useEffect(() => {
+    // Set loading to false once the component has mounted
+    setLoading(false);
+  }, []);
 
   return (
     <div>
@@ -77,7 +82,7 @@ export default function Home() {
           <h1 className="title" style={{transform: "translate(-50%, -50%)", zIndex: 2}}>stop planning, <br/> start doing.</h1>
           <div style={{ zIndex: 2, display: 'flex', flexDirection: 'column' }} className="startscroll">
             <div>click anywhere to get started</div>
-            <div>⊕</div>
+            <div className='clicker'>⊕</div>
           </div>
         </div>
       </div>

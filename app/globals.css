@@ -84,19 +84,12 @@ body, html {
   top: 65%;
   left: 39.0%;
   text-align: center;
-  animation: bob 2s infinite;
-}
-
-@keyframes bob {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-  100% {
-    transform: translateY(0);
-  }
+  text-shadow: 
+    0.2px 0.2px 0 #FFD392,
+    0.4px 0.4px 0 #FFD392,
+    0.6px 0.6px 0 #FFD392,
+    0.8px 0.8px 0 #FFD392,
+    1.0px 1.0px 0 #FFD392;
 }
 
 .ticker-container {
@@ -118,7 +111,7 @@ body, html {
 .ticker {
   display: inline-block;
   white-space: nowrap;
-  animation: ticker 10s linear infinite;
+  animation: ticker 15s linear infinite;
 }
 
 .ticker span {
@@ -140,5 +133,21 @@ body, html {
   }
   100% {
     transform: translateX(-50%);
+  }
+}
+
+.clicker{
+  animation: clicker 2s infinite;
+}
+
+@keyframes clicker {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
   }
 }
