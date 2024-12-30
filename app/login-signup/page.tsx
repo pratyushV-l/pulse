@@ -45,7 +45,7 @@ export default function LoginSignup() {
         </svg>
         Continue as Guest
       </button>
-      <div className="ticker-container-2">
+      <div className="ticker-container-5">
           <div className="ticker">
             {["Efficiency", "Output", "Performance", "Effectiveness", "Proficiency", "Workrate", "Yield", "Capability", "Throughput", "Competence", "Result", "Accomplishment", "Workload", "Produciveness", "Production", "Capacity", "Achievement", "Return", "Excellence", "Success"].map((word, index) => (
               <span key={index}>{word}</span>
@@ -79,6 +79,9 @@ export default function LoginSignup() {
           <Image src='/logo.png' width={50} height={50} quality={100} alt="logo"/>
           <span style={{ marginLeft: "10px", fontSize: "1.5rem" }} className="logotext">pulse.</span>
         </div>
+        <p className="watermark">
+          An <a href="https://github.com/pratyushV-l/pulse">open source</a> venture by <a href="https://github.com/pratyushv-l">pratyushv-1</a>.
+        </p>
     </div>
   );
 }

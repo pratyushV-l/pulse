@@ -84,6 +84,9 @@ export default function Home() {
             <Image src="/logo.png" width={25} height={25} alt="click" style={{ paddingTop: 10}} className="clicker"/>
           </div>
         </div>
+        <p className="watermark">
+          An <a href="https://github.com/pratyushV-l/pulse">open source</a> venture by <a href="https://github.com/pratyushv-l">pratyushv-1</a>.
+        </p>
       </div>
     </div>
   );
