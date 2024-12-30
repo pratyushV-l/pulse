@@ -18,7 +18,7 @@ export default function LoginSignup() {
   };
 
   return (
-    <div className="background diagonal-line" style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
+    <div className="background-2 diagonal-line" style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
       <div style={{ display: "flex", alignItems: "center" }}>
         <img src="/logo.png" width={50} height={50} alt="logo" style={{ position: "absolute", left: "69%", top: "8.5%"}}/>
         <h1 className="title-2">Sign-Up</h1>
