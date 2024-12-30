@@ -7,7 +7,7 @@ import Loading from "@/components/Loading";
 
 export default function Home() {
   const router = useRouter();
-  const [loading, setLoading] = useState(true); // Set initial loading state to true
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const handleRouteChange = () => {
@@ -43,7 +43,6 @@ export default function Home() {
   }, [router]);
 
   useEffect(() => {
-    // Set loading to false once the component has mounted
     setLoading(false);
   }, []);
 
@@ -80,9 +79,9 @@ export default function Home() {
         </div>
         <div style={{ position: "relative", zIndex: 2, width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
           <h1 className="title" style={{transform: "translate(-50%, -50%)", zIndex: 2}}>stop planning, <br/> start doing.</h1>
-          <div style={{ zIndex: 2, display: 'flex', flexDirection: 'column' }} className="startscroll">
+          <div style={{ zIndex: 2, display: 'flex', flexDirection: 'column', justifyContent: 'center',  alignItems: "center"}} className="startscroll">
             <div>click anywhere to get started</div>
-            <div className='clicker'>⊕</div>
+            <Image src="/logo.png" width={25} height={25} alt="click" style={{ paddingTop: 10}} className="clicker"/>
           </div>
         </div>
       </div>
