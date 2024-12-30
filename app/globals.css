@@ -279,4 +279,12 @@ body, html {
   top: 65%;
   left: 75%;
   transform: translate(-50%, -50%);
+  font-size: 1.0em;
+  font-family: 'Bree Serif', serif;
+  text-shadow: 
+    0.2px 0.2px 0 #FFD392,
+    0.4px 0.4px 0 #FFD392,
+    0.6px 0.6px 0 #FFD392,
+    0.8px 0.8px 0 #FFD392,
+    1.0px 1.0px 0 #FFD392;
 }
