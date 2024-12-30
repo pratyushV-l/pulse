@@ -189,11 +189,34 @@ body, html {
 .google-form-container {
   position: absolute;
   top: 30%;
-  left: l 65%;
+  left: 65%;
 }
 
 .gh_btn {
   position: absolute;
   top: 30%;
   left: 60%;
+  background-color: #333333;
+}
+
+.go_btn {
+  position: absolute;
+  top: 40%;
+  left: 60%;
+  border-width: 2px;
+  border-color: #202020;
+}
+
+.guest_btn {
+  position: absolute;
+  top: 52.5%;
+  left: 60%;
+  color: #FFD392;
+  background-color: #333333;
+  box-shadow: 
+    1.4px 1.4px 0 #FFD392, 
+    1.7px 1.7px 0 #FFD392,
+    2.1px 2.1px 0 #FFD392,
+    2.4px 2.4px 0 #FFD392,
+    2.8px 2.8px 0 #FFD392;
 }
