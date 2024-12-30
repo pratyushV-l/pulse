@@ -112,7 +112,7 @@ body, html {
 
 .ticker-container-5 {
   position: absolute;
-  top: 77.28%;
+  top: 80.28%;
   width: 100%;
   overflow: hidden;
   white-space: nowrap;
@@ -120,14 +120,14 @@ body, html {
 
 .ticker-container-3 {
   position: absolute;
-  top: 82.28%;
+  top: 85.28%;
   width: 100%;
   overflow: hidden;
   white-space: nowrap;
 }
 .ticker-container-4 {
   position: absolute;
-  top: 72.28%;
+  top: 75.28%;
   width: 100%;
   overflow: hidden;
   white-space: nowrap;
@@ -139,7 +139,13 @@ body, html {
   animation: ticker 15s linear infinite;
 }
 
-.ticker span {
+.ticker-reverse {
+  display: inline-block;
+  white-space: nowrap;
+  animation: ticker-reverse 15s linear infinite;
+}
+
+.ticker span{
   display: inline-block;
   padding-right: 2rem;
   font-size: 1.0em;
@@ -158,6 +164,15 @@ body, html {
   }
   100% {
     transform: translateX(-50%);
+  }
+}
+
+@keyframes ticker-reverse {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
   }
 }
 
@@ -260,4 +275,11 @@ body, html {
     0.6px 0.6px 0 #FFD392,
     0.8px 0.8px 0 #FFD392,
     1.0px 1.0px 0 #FFD392;
+}
+
+.sign-log {
+  position: absolute;
+  top: 65%;
+  left: 75%;
+  transform: translate(-50%, -50%);
 }

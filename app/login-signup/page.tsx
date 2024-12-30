@@ -2,8 +2,10 @@
 
 import { signIn } from "next-auth/react";
 import Image from "next/image";
+import { useState } from "react";
 
 export default function LoginSignup() {
+  const [isSignUp, setIsSignUp] = useState(true);
 
   const handleGoogleSignIn = () => {
     signIn("google", { redirect_uri: "https://pulsev1.me/" });
@@ -17,11 +19,15 @@ export default function LoginSignup() {
     //later
   };
 
+  const toggleSignUpLogin = () => {
+    setIsSignUp(!isSignUp);
+  }
+
   return (
     <div className="background-2 diagonal-line" style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
       <div style={{ display: "flex", alignItems: "center" }}>
         <img src="/logo.png" width={50} height={50} alt="logo" style={{ position: "absolute", left: "69%", top: "8.5%"}}/>
-        <h1 className="title-2">Sign-Up</h1>
+        <h1 className="title-2">{isSignUp ? 'Sign-Up' : 'Login'}</h1>
       </div>
       <button type="button" className="py-2 px-4 max-w-md flex justify-center items-center hover:bg-gray-700 focus:ring-gray-500 focus:ring-offset-gray-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg gh_btn" onClick={handleGitHubSignIn}>
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="mr-2" viewBox="0 0 1792 1792">
@@ -45,43 +51,46 @@ export default function LoginSignup() {
         </svg>
         Continue as Guest
       </button>
+      <p onClick={toggleSignUpLogin} style={{ cursor: 'pointer', marginTop: "10px", textAlign: "center"}} className="sign-log">
+        {isSignUp ? "Already have an account? Log in" : "Don't have an account? Sign up"}
+      </p>
       <div className="ticker-container-5">
-          <div className="ticker">
-            {["Efficiency", "Output", "Performance", "Effectiveness", "Proficiency", "Workrate", "Yield", "Capability", "Throughput", "Competence", "Result", "Accomplishment", "Workload", "Produciveness", "Production", "Capacity", "Achievement", "Return", "Excellence", "Success"].map((word, index) => (
-              <span key={index}>{word}</span>
-            ))}
-            {["Efficiency", "Output", "Performance", "Effectiveness", "Proficiency", "Workrate", "Yield", "Capability", "Throughput", "Competence", "Result", "Accomplishment", "Workload", "Produciveness", "Production", "Capacity", "Achievement", "Return", "Excellence", "Success"].map((word, index) => (
-              <span key={index + 20}>{word}</span>
-            ))}
-          </div>
+        <div className={`ticker ${isSignUp ? '' : 'ticker-reverse'}`}>
+          {["Efficiency", "Output", "Performance", "Effectiveness", "Proficiency", "Workrate", "Yield", "Capability", "Throughput", "Competence", "Result", "Accomplishment", "Workload", "Produciveness", "Production", "Capacity", "Achievement", "Return", "Excellence", "Success"].map((word, index) => (
+            <span key={index}>{word}</span>
+          ))}
+          {["Efficiency", "Output", "Performance", "Effectiveness", "Proficiency", "Workrate", "Yield", "Capability", "Throughput", "Competence", "Result", "Accomplishment", "Workload", "Produciveness", "Production", "Capacity", "Achievement", "Return", "Excellence", "Success"].map((word, index) => (
+            <span key={index + 20}>{word}</span>
+          ))}
         </div>
-        <div className="ticker-container-3">
-          <div className="ticker">
-            {["Innovation", "Creativity", "Inspiration", "Imagination", "Vision", "Ingenuity", "Originality", "Resourcefulness", "Inventiveness", "Artistry", "Design", "Concept", "Idea", "Plan", "Scheme", "Blueprint", "Framework", "Model", "Prototype", "Draft"].map((word, index) => (
-              <span key={index}>{word}</span>
-            ))}
-            {["Innovation", "Creativity", "Inspiration", "Imagination", "Vision", "Ingenuity", "Originality", "Resourcefulness", "Inventiveness", "Artistry", "Design", "Concept", "Idea", "Plan", "Scheme", "Blueprint", "Framework", "Model", "Prototype", "Draft"].map((word, index) => (
-              <span key={index + 20}>{word}</span>
-            ))}
-          </div>
+      </div>
+      <div className="ticker-container-3">
+        <div className={`ticker ${isSignUp ? '' : 'ticker-reverse'}`}>
+          {["Innovation", "Creativity", "Inspiration", "Imagination", "Vision", "Ingenuity", "Originality", "Resourcefulness", "Inventiveness", "Artistry", "Design", "Concept", "Idea", "Plan", "Scheme", "Blueprint", "Framework", "Model", "Prototype", "Draft"].map((word, index) => (
+            <span key={index}>{word}</span>
+          ))}
+          {["Innovation", "Creativity", "Inspiration", "Imagination", "Vision", "Ingenuity", "Originality", "Resourcefulness", "Inventiveness", "Artistry", "Design", "Concept", "Idea", "Plan", "Scheme", "Blueprint", "Framework", "Model", "Prototype", "Draft"].map((word, index) => (
+            <span key={index + 20}>{word}</span>
+          ))}
         </div>
-        <div className="ticker-container-4">
-          <div className="ticker">
-            {["Adventure", "Discovery", "Exploration", "Journey", "Quest", "Odyssey", "Expedition", "Voyage", "Excursion", "Safari", "Trek", "Pilgrimage", "Wanderlust", "Roaming", "Travel", "Tour", "Trip", "Excursion", "Hike", "Expedition"].map((word, index) => (
-              <span key={index}>{word}</span>
-            ))}
-            {["Adventure", "Discovery", "Exploration", "Journey", "Quest", "Odyssey", "Expedition", "Voyage", "Excursion", "Safari", "Trek", "Pilgrimage", "Wanderlust", "Roaming", "Travel", "Tour", "Trip", "Excursion", "Hike", "Expedition"].map((word, index) => (
-              <span key={index + 20}>{word}</span>
-            ))}
-          </div>
+      </div>
+      <div className="ticker-container-4">
+        <div className={`ticker ${isSignUp ? '' : 'ticker-reverse'}`}>
+          {["Adventure", "Discovery", "Exploration", "Journey", "Quest", "Odyssey", "Expedition", "Voyage", "Excursion", "Safari", "Trek", "Pilgrimage", "Wanderlust", "Roaming", "Travel", "Tour", "Trip", "Excursion", "Hike", "Expedition"].map((word, index) => (
+            <span key={index}>{word}</span>
+          ))}
+          {["Adventure", "Discovery", "Exploration", "Journey", "Quest", "Odyssey", "Expedition", "Voyage", "Excursion", "Safari", "Trek", "Pilgrimage", "Wanderlust", "Roaming", "Travel", "Tour", "Trip", "Excursion", "Hike", "Expedition"].map((word, index) => (
+            <span key={index + 20}>{word}</span>
+          ))}
         </div>
-        <div style={{ display: "flex", alignItems: "center", zIndex: 9999, paddingTop: 3, paddingLeft: 3 }}>
-          <Image src='/logo.png' width={50} height={50} quality={100} alt="logo"/>
-          <span style={{ marginLeft: "10px", fontSize: "1.5rem" }} className="logotext">pulse.</span>
-        </div>
-        <p className="watermark">
-          An <a href="https://github.com/pratyushV-l/pulse">open source</a> venture by <a href="https://github.com/pratyushv-l">pratyushv-1</a>.
-        </p>
+      </div>
+      <div style={{ display: "flex", alignItems: "center", zIndex: 9999, paddingTop: 3, paddingLeft: 3 }}>
+        <Image src='/logo.png' width={50} height={50} quality={100} alt="logo"/>
+        <span style={{ marginLeft: "10px", fontSize: "1.5rem" }} className="logotext">pulse.</span>
+      </div>
+      <p className="watermark">
+        An <a href="https://github.com/pratyushV-l/pulse">open source</a> venture by <a href="https://github.com/pratyushv-l">pratyushv-1</a>.
+      </p>
     </div>
   );
 }
