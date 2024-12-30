@@ -108,6 +108,21 @@ body, html {
   white-space: nowrap;
 }
 
+.ticker-container-3 {
+  position: absolute;
+  top: 86.28%;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.ticker-container-4 {
+  position: absolute;
+  top: 76.28%;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 .ticker {
   display: inline-block;
   white-space: nowrap;
