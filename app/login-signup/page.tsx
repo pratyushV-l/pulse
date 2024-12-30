@@ -1,21 +1,15 @@
 'use client'
 
-import { useState } from "react";
 import { signIn } from "next-auth/react";
 
 export default function LoginSignup() {
-  const [isLogin, setIsLogin] = useState(true);
 
-  const toggleForm = () => {
-    setIsLogin(!isLogin);
+  const handleGoogleSignIn = () => {
+    signIn("google");
   };
 
-  const handleGoogleSignIn = async () => {
-    await signIn("google");
-  };
-
-  const handleGitHubSignIn = async () => {
-    await signIn("github");
+  const handleGitHubSignIn = () => {
+    signIn("github");
   };
 
   return (
