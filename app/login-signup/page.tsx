@@ -5,7 +5,7 @@ import { signIn } from "next-auth/react";
 export default function LoginSignup() {
 
   const handleGoogleSignIn = () => {
-    signIn("google");
+    signIn("google", { redirect_uri: "https://pulsev1.me/" });
   };
 
   const handleGitHubSignIn = () => {
