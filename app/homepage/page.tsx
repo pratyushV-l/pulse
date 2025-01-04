@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Calendar from "@/components/Calendar";
 import Image from "next/image";
+import Cookies from "js-cookie";
 
 function getOrdinalSuffix(day: number) {
     if (day > 3 && day < 21) return 'th';
@@ -16,6 +17,18 @@ function getOrdinalSuffix(day: number) {
 
 export default function HomePage() {
     const [selectedDate, setSelectedDate] = useState(new Date());
+    const [mode, setMode] = useState("Day");
+
+    useEffect(() => {
+        const savedMode = Cookies.get("mode");
+        if (savedMode) {
+            setMode(savedMode);
+        }
+    }, []);
+
+    useEffect(() => {
+        Cookies.set("mode", mode);
+    }, [mode]);
 
     const day = selectedDate.getDate();
     const ordinalDay = `${day}${getOrdinalSuffix(day)}`;
@@ -40,16 +53,15 @@ export default function HomePage() {
                     ))}
                 </div>
             </div>
-            <Calendar onDateChange={setSelectedDate} selectedDate={selectedDate} />
+            <Calendar onDateChange={setSelectedDate} selectedDate={selectedDate} mode={mode} />
             <div style={{ position: "fixed", display: "flex", alignItems: "center", zIndex: 9998, paddingTop: 7.5, paddingLeft: 90 }}>
                 <Image src='/logo.png' width={35} height={35} quality={100} alt="logo"/>
                 <span style={{ marginLeft: "10px", fontSize: "1.5rem" }} className="logotext">pulse.</span>
             </div>
             <div className="selection_row">
-                <select className="dropdown">
-                    <option value="option1">Day</option>
-                    <option value="option2">Week</option>
-                    <option value="option3">Month</option>
+                <select className="dropdown" value={mode} onChange={(e) => setMode(e.target.value)}>
+                    <option value="Day">Day</option>
+                    <option value="Week">Week</option>
                 </select>
                 <button className="today_btn" onClick={() => setSelectedDate(new Date())}>Today</button>
             </div>

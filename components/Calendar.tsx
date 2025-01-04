@@ -5,9 +5,10 @@ import React, { useState, useEffect } from "react";
 interface CalendarProps {
     selectedDate: Date;
     onDateChange: (date: Date) => void;
+    mode: string;
 }
 
-const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateChange }) => {
+const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateChange, mode }) => {
     const [currentDate, setCurrentDate] = useState(selectedDate);
 
     useEffect(() => {
@@ -46,10 +47,11 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateChange }) => {
         );
     }
     for (let i = 1; i <= daysInMonth; i++) {
+        const isHighlighted = mode === "Week" && Math.abs(i - currentDay) <= 2;
         days.push(
             <div
                 key={i}
-                className={`calendar-day ${i === currentDay ? 'accent' : ''}`}
+                className={`calendar-day ${i === currentDay ? 'accent' : ''} ${isHighlighted ? 'highlight' : ''}`}
                 onClick={() => {
                     const newDate = new Date(currentYear, currentMonth, i);
                     setCurrentDate(newDate);
