@@ -442,15 +442,69 @@ body, html {
   margin-top: 1rem;
   position: absolute;
   transform: translate(-50%, -50%);
-  top: 6.0%;
-  left: 93.5%;
+  top: 6.25%;
+  left: 92%;
+}
+
+.new_task_btn-1 {
+  font-size: 1rem;
+  font-family: "Bree Serif", serif;
+  border: 1px solid var(--foreground);
+  border-radius: 5px;
+  background-color: transparent;
+  color: var(--foreground);
+  box-shadow: 
+    1.4px 1.4px 0 #FFD392, 
+    1.7px 1.7px 0 #FFD392,
+    2.1px 2.1px 0 #FFD392,
+    2.4px 2.4px 0 #FFD392,
+    2.8px 2.8px 0 #FFD392;
+  padding-left: 6rem;
+  padding-right: 6rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  transform: translate(-50%, -50%);
+  top: 8.25%;
+  left: 66.5%;;
+  position: absolute;
+}
+
+.button_content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+
+.new_task_btn-2 {
+  font-size: 1rem;
+  font-family: "Bree Serif", serif;
+  border: 1px solid var(--foreground);
+  border-radius: 5px;
+  background-color: #f0f0f5;
+  color: var(--foreground);
+  box-shadow: 
+    1.4px 1.4px 0 #FFD392, 
+    1.7px 1.7px 0 #FFD392,
+    2.1px 2.1px 0 #FFD392,
+    2.4px 2.4px 0 #FFD392,
+    2.8px 2.8px 0 #FFD392;
+  padding-left: 4rem;
+  padding-right: 4rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  transform: translate(-50%, -50%);
+  top: 43.5%;
+  left: 10%;
+  position: absolute;
+  z-index: 9998;
 }
 
 .dropdown {
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-  padding-top: 0.25rem;
-  padding-bottom: 0.25rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
   font-size: 1rem;
   font-family: "Bree Serif", serif;
   border: 1px solid var(--foreground);
@@ -479,8 +533,8 @@ body, html {
     2.1px 2.1px 0 #FFD392,
     2.4px 2.4px 0 #FFD392,
     2.8px 2.8px 0 #FFD392;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .calendar-day.highlight {

@@ -32,7 +32,7 @@ export default function HomePage() {
 
     const day = selectedDate.getDate();
     const ordinalDay = `${day}${getOrdinalSuffix(day)}`;
-    const weekday = selectedDate.toLocaleDateString('en-US', { weekday: 'long' });
+    const weekday = selectedDate.toLocaleDateString('en-US', { weekday: 'short' });
     const month = selectedDate.toLocaleDateString('en-US', { month: 'short' });
     const year = selectedDate.getFullYear();
 
@@ -42,7 +42,6 @@ export default function HomePage() {
         <div className="background-3">
             <div className="straight-line">
             </div>
-            <h1 className="title-3">{formattedDate}</h1>
             <div className="ticker-container-6">
                 <div className="ticker">
                     {["Efficiency", "Output", "Performance", "Effectiveness", "Proficiency", "Workrate", "Yield", "Capability", "Throughput", "Competence", "Result", "Accomplishment", "Workload", "Produciveness", "Production", "Capacity", "Achievement", "Return", "Excellence", "Success"].map((word, index) => (
@@ -58,13 +57,36 @@ export default function HomePage() {
                 <Image src='/logo.png' width={35} height={35} quality={100} alt="logo"/>
                 <span style={{ marginLeft: "10px", fontSize: "1.5rem" }} className="logotext">pulse.</span>
             </div>
-            <div className="selection_row">
-                <select className="dropdown" value={mode} onChange={(e) => setMode(e.target.value)}>
-                    <option value="Day">Day</option>
-                    <option value="Week">Week</option>
-                </select>
-                <button className="today_btn" onClick={() => setSelectedDate(new Date())}>Today</button>
+            <div className="header-row">
+                <h1 className="title-3">{formattedDate}</h1>
+                <div className="selection_row">
+                    <select className="dropdown" value={mode} onChange={(e) => setMode(e.target.value)}>
+                        <option value="Day">Day</option>
+                        <option value="Week">Week</option>
+                    </select>
+                    <button className="today_btn" onClick={() => setSelectedDate(new Date())}>Today</button>
+                </div>
+                <button className="new_task_btn-1">
+                    <div className="button_content">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
+                            <line x1="12" y1="8" x2="12" y2="16" stroke="currentColor" strokeWidth="2"/>
+                            <line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" strokeWidth="2"/>
+                        </svg>
+                        <span>New Task</span>
+                    </div>
+                </button>
             </div>
+            <button className="new_task_btn-2">
+                <div className="button_content">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
+                        <line x1="12" y1="8" x2="12" y2="16" stroke="currentColor" strokeWidth="2"/>
+                        <line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                    <span>New Task</span>
+                </div>
+            </button>
         </div>
     )
 }
