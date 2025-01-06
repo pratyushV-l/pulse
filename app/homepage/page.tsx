@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Calendar from "@/components/Calendar";
 import Image from "next/image";
 import Cookies from "js-cookie";
+import TimeLeftWidget from "@/components/TimeLeftWidget";
 
 function getOrdinalSuffix(day: number) {
     if (day > 3 && day < 21) return 'th';
@@ -15,9 +16,22 @@ function getOrdinalSuffix(day: number) {
     }
 }
 
+function getRandomBrightColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
 export default function HomePage() {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [mode, setMode] = useState("Day");
+    const [tags, setTags] = useState([{ name: "Other", color: "#ffd999" }]);
+    const [showPopup, setShowPopup] = useState(false);
+    const [newTagName, setNewTagName] = useState("");
+    const [newTagColor, setNewTagColor] = useState(getRandomBrightColor());
 
     useEffect(() => {
         const savedMode = Cookies.get("mode");
@@ -30,6 +44,27 @@ export default function HomePage() {
         Cookies.set("mode", mode);
     }, [mode]);
 
+    const handleAddTag = () => {
+        if (tags.length < 5) {
+            setShowPopup(true);
+            setNewTagColor(getRandomBrightColor())
+        }
+    }
+
+    const handleSubmitTag = () => {
+        const otherTagIndex = tags.findIndex(tag => tag.name === "Other");
+        const newTags = [...tags];
+        newTags.splice(otherTagIndex, 0, { name: newTagName, color: newTagColor });
+        setTags(newTags);
+        setShowPopup(false);
+        setNewTagName("");
+        setNewTagColor(getRandomBrightColor());
+    };
+
+    const handleDeleteTag = (index: number) => {
+        setTags(tags.filter((_, i) => i !== index));
+    }
+
     const day = selectedDate.getDate();
     const ordinalDay = `${day}${getOrdinalSuffix(day)}`;
     const weekday = selectedDate.toLocaleDateString('en-US', { weekday: 'short' });
@@ -37,6 +72,23 @@ export default function HomePage() {
     const year = selectedDate.getFullYear();
 
     const formattedDate = `${weekday}, ${month} ${ordinalDay}, ${year}`;
+
+    const getTopValue = (numTags: number) => {
+        switch (numTags) {
+        case 1:
+            return "58%";
+        case 2:
+            return "63%";
+        case 3:
+            return "68%";
+        case 4:
+            return "73%";
+        case 5:
+            return "78%";
+        default:
+            return "83%";
+        }
+    };
 
     return (
         <div className="background-3">
@@ -87,6 +139,27 @@ export default function HomePage() {
                     <span>New Task</span>
                 </div>
             </button>
+            <p className="tags-label">Tags:</p>
+                <div className="tags-container">
+                    {tags.map((tag, index) => (
+                        <div key={index} className="tag" style={{ color: tag.color }}>
+                            <span className="tag-name">{tag.name}</span>
+                            {tag.name !== "Other" && <button type="button" className="delete-tag" onClick={() => handleDeleteTag(index)}>✖</button>}
+                        </div>
+                    ))}
+                </div>
+                <button className="add-tag-btn" onClick={handleAddTag} disabled = {tags.length >= 5} style={{ top: getTopValue(tags.length) }}>
+                    Add Tag
+                </button>
+            {showPopup && (
+                <div className="popup">
+                    <input type="text" value={newTagName} onChange={(e) => setNewTagName(e.target.value)} placeholder="Tag Name" />
+                    <input type="color" value={newTagColor} onChange={(e) => setNewTagColor(e.target.value)} />
+                    <button onClick={handleSubmitTag} disabled={!newTagName.trim()}>Submit</button>
+                </div>
+            )}
+            <hr className="thin-line" />
+            <TimeLeftWidget />
         </div>
     )
 }
