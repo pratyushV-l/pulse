@@ -721,6 +721,7 @@ body, html {
   font-family: "Bree Serif", serif;
   color: #202020;
   text-shadow: 0.2px 0.2px 0 #FFD392, 0.4px 0.4px 0 #FFD392, 0.6px 0.6px 0 #FFD392, 0.8px 0.8px 0 #FFD392, 1.0px 1.0px 0 #FFD392;
+  width: 40px;
 }
 
 .bar {
