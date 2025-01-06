@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 
-const TimeLeftWidget: React.FC = () => {
+interface TimeLeftWidgetProps {
+    numTags: number;
+}
+
+const TimeLeftWidget: React.FC<TimeLeftWidgetProps> = ({ numTags }) => {
     const [timeCompletedInHour, setTimeCompletedInHour] = useState(0);
     const [timeCompletedInDay, setTimeCompletedInDay] = useState(0);
     const [timeCompletedInWeek, setTimeCompletedInWeek] = useState(0);
@@ -27,8 +31,19 @@ const TimeLeftWidget: React.FC = () => {
         return () => clearInterval(interval);
     }, []);
 
+    const getTopValue = (numTags: number) => {
+        switch (numTags) {
+            case 4:
+                return "83.5%";
+            case 5:
+                return "82%";
+            default:
+                return "84.5%";
+        }
+    };
+
     return (
-        <div className="time-left-widget">
+        <div className="time-left-widget" style={{ top: getTopValue(numTags) }}>
             <div className="time-bar">
                 <span>Hour:</span>
                 <div className="bar">

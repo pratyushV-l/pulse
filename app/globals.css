@@ -707,7 +707,6 @@ body, html {
   flex-direction: column;
   gap: 0.25rem;
   left: 1%;
-  top: 84.5%;
   border: 1px solid var(--foreground);
 }
 

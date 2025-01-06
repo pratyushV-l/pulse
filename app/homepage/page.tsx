@@ -158,8 +158,7 @@ export default function HomePage() {
                     <button onClick={handleSubmitTag} disabled={!newTagName.trim()}>Submit</button>
                 </div>
             )}
-            <hr className="thin-line" />
-            <TimeLeftWidget />
+            <TimeLeftWidget numTags={tags.length}/>
         </div>
     )
 }
