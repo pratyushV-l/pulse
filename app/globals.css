@@ -199,17 +199,6 @@ body, html {
   font-size: 0.9em;
 }
 
-.calendar-header {
-  color: #202020;
-  display: flex;
-  padding-left: 15px;
-  padding-right: 15px;
-  padding-top: 10px;
-  font-size: 1.0em;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .calendar-day.accent {
   background: #FFD392 !important;
   color: #202020 !important;
@@ -677,13 +666,14 @@ body, html {
   transform: translate(-50%, -50%);
   width: 40%;
   height: 20%;
-  background-color: #f0f0f5;
+  background-color: #e8e8e9;
   box-shadow: 
     1.4px 1.4px 0 #FFD392, 
     1.7px 1.7px 0 #FFD392,
     2.1px 2.1px 0 #FFD392,
     2.4px 2.4px 0 #FFD392,
     2.8px 2.8px 0 #FFD392;
+  border: 1px solid var(--foreground);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -736,4 +726,58 @@ body, html {
   background-color: #FFD392;
   border-radius: 5px;
   transition: width 0.5s;
+}
+
+.calendar-container {
+  width: 77.5%;
+  height: 82.5%;
+  background-color: transparent;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 2rem auto;
+  border: 1px solid var(--foreground);
+  position: absolute;
+  overflow: hidden;
+  left: 21.25%;
+  top: 10.5%;
+  scrollbar-width: none;
+  box-shadow: 
+  10.8px 10.8px 0 #FFD392;
+}
+
+.calendar-body {
+  display: flex;
+  flex-direction: column;
+  height: calc(100%);
+  position: relative;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.time-slot {
+  flex: 0 0 calc(100% / 12);
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  font-family: "Bree Serif", serif;
+  font-size: 1rem;
+  z-index: 1;
+  color: var(--foreground);
+  height: calc(100% / 2);
+}
+
+.time-slot:last-child {
+  border-bottom: none;
+}
+
+.current-time-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: transparent;
+  z-index: 0;
+  border-top: 3px dashed #ffd392;
 }
