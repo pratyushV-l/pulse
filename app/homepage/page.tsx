@@ -159,7 +159,7 @@ export default function HomePage() {
                     <button onClick={handleSubmitTag} disabled={!newTagName.trim()}>Submit</button>
                 </div>
             )}
-            <Schedule />
+            <Schedule mode={mode}/>
             <TimeLeftWidget numTags={tags.length}/>
         </div>
     )
