@@ -33,8 +33,6 @@ const TimeLeftWidget: React.FC<TimeLeftWidgetProps> = ({ numTags }) => {
 
     const getTopValue = (numTags: number) => {
         switch (numTags) {
-            case 4:
-                return "83.5%";
             case 5:
                 return "82%";
             default:

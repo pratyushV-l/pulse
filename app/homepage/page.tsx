@@ -5,6 +5,7 @@ import Calendar from "@/components/Calendar";
 import Image from "next/image";
 import Cookies from "js-cookie";
 import TimeLeftWidget from "@/components/TimeLeftWidget";
+import Schedule from "@/components/Schedule";
 
 function getOrdinalSuffix(day: number) {
     if (day > 3 && day < 21) return 'th';
@@ -32,8 +33,6 @@ export default function HomePage() {
     const [showPopup, setShowPopup] = useState(false);
     const [newTagName, setNewTagName] = useState("");
     const [newTagColor, setNewTagColor] = useState(getRandomBrightColor());
-    const calendarBodyRef = useRef<HTMLDivElement>(null);
-    const [currentTimePosition, setCurrentTimePosition] = useState(0);
 
     useEffect(() => {
         const savedMode = Cookies.get("mode");
@@ -45,28 +44,6 @@ export default function HomePage() {
     useEffect(() => {
         Cookies.set("mode", mode);
     }, [mode]);
-
-    useEffect(() => {
-        const updateCurrentTimePosition = () => {
-            const now = new Date();
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
-            const totalMinutes = hours * 60 + minutes;
-            const position = (totalMinutes / 720) * 100;
-            setCurrentTimePosition(position);
-        };
-
-        updateCurrentTimePosition();
-        const intervalId = setInterval(updateCurrentTimePosition, 60000);
-
-        if (calendarBodyRef.current) {
-            const currentTime = new Date().getHours();
-            const scrollPosition = (currentTime - 2) * (calendarBodyRef.current.scrollHeight / 24);
-            calendarBodyRef.current.scrollTop = scrollPosition;
-        }
-
-        return () => clearInterval(intervalId);
-    }, []);
 
     const handleAddTag = () => {
         if (tags.length < 5) {
@@ -112,19 +89,6 @@ export default function HomePage() {
         default:
             return "83%";
         }
-    };
-
-    const renderTimeSlots = () => {
-        const timeSlots = [];
-        for (let i = 0; i < 24; i++) {
-            const time = `${i < 10 ? '0' : ''}${i}:00`;
-            timeSlots.push(
-                <div key={i} className="time-slot">
-                    <span>{time}</span>
-                </div>
-            );
-        }
-        return timeSlots;
     };
 
     return (
@@ -195,12 +159,7 @@ export default function HomePage() {
                     <button onClick={handleSubmitTag} disabled={!newTagName.trim()}>Submit</button>
                 </div>
             )}
-            <div className="calendar-container">
-                <div className="calendar-body" ref={calendarBodyRef}>
-                    {renderTimeSlots()}
-                    <div className="current-time-line" style={{ top: `${currentTimePosition}%` }}></div>
-                </div>
-            </div>
+            <Schedule />
             <TimeLeftWidget numTags={tags.length}/>
         </div>
     )
