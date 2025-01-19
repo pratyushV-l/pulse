@@ -47,7 +47,7 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateChange, mode })
         );
     }
     for (let i = 1; i <= daysInMonth; i++) {
-        const isHighlighted = mode === "Week" && Math.abs(i - currentDay) <= 2;
+        const isHighlighted = mode === "Week" && i > currentDay && i <= currentDay + 4;
         days.push(
             <div
                 key={i}

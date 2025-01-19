@@ -33,6 +33,8 @@ export default function HomePage() {
     const [showPopup, setShowPopup] = useState(false);
     const [newTagName, setNewTagName] = useState("");
     const [newTagColor, setNewTagColor] = useState(getRandomBrightColor());
+    const [showTaskPopup, setShowTaskPopup] = useState(false);
+    const [newTaskName, setNewTaskName] = useState("");
 
     useEffect(() => {
         const savedMode = Cookies.get("mode");
@@ -91,6 +93,15 @@ export default function HomePage() {
         }
     };
 
+    const handleAddTask = () => {
+        setShowTaskPopup(true);
+    }
+
+    const handleSubmitTask = () => {
+        setShowTaskPopup(false);
+        setNewTaskName("");
+    }
+
     return (
         <div className="background-3">
             <div className="straight-line">
@@ -119,7 +130,7 @@ export default function HomePage() {
                     </select>
                     <button className="today_btn" onClick={() => setSelectedDate(new Date())}>Today</button>
                 </div>
-                <button className="new_task_btn-1">
+                <button className="new_task_btn-1" onClick={handleAddTask}>
                     <div className="button_content">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
@@ -130,7 +141,7 @@ export default function HomePage() {
                     </div>
                 </button>
             </div>
-            <button className="new_task_btn-2">
+            <button className="new_task_btn-2" onClick={handleAddTask}>
                 <div className="button_content">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
@@ -140,6 +151,19 @@ export default function HomePage() {
                     <span>New Task</span>
                 </div>
             </button>
+            {showTaskPopup && (
+                <>
+                    <div className="blur-background"></div>
+                    <div className="popup task-popup">
+                        <button className="close-button" onClick={() => setShowTaskPopup(false)}>✖</button>
+                        <input type="text" value={newTaskName} onChange={(e) => setNewTaskName(e.target.value)} placeholder="Enter Your Task" />
+                        <button onClick={handleSubmitTask} disabled={!newTaskName.trim()} className="popup-submit-button">Add</button>
+                        <div className="scroll-content">
+                            <p>Add Later</p>
+                        </div>
+                    </div>
+                </>
+            )}
             <p className="tags-label">Tags:</p>
                 <div className="tags-container">
                     {tags.map((tag, index) => (
@@ -152,14 +176,18 @@ export default function HomePage() {
                 <button className="add-tag-btn" onClick={handleAddTag} disabled = {tags.length >= 5} style={{ top: getTopValue(tags.length) }}>
                     Add Tag
                 </button>
-            {showPopup && (
-                <div className="popup">
-                    <input type="text" value={newTagName} onChange={(e) => setNewTagName(e.target.value)} placeholder="Tag Name" />
-                    <input type="color" value={newTagColor} onChange={(e) => setNewTagColor(e.target.value)} />
-                    <button onClick={handleSubmitTag} disabled={!newTagName.trim()}>Submit</button>
-                </div>
-            )}
-            <Schedule mode={mode}/>
+                {showPopup && (
+                    <>
+                        <div className="blur-background"></div>
+                        <div className="popup">
+                            <button className="close-button" onClick={() => setShowPopup(false)}>✖</button>
+                            <input type="text" value={newTagName} onChange={(e) => setNewTagName(e.target.value)} placeholder="Tag Name" />
+                            <input type="color" value={newTagColor} onChange={(e) => setNewTagColor(e.target.value)} />
+                            <button onClick={handleSubmitTag} disabled={!newTagName.trim()} className="popup-submit-button">Submit</button>
+                        </div>
+                    </>
+                )}
+            <Schedule mode={mode} selectedDate={selectedDate}/>
             <TimeLeftWidget numTags={tags.length}/>
         </div>
     )

@@ -672,8 +672,8 @@ body, html {
   left: 50%;
   transform: translate(-50%, -50%);
   width: 40%;
-  height: 20%;
-  background-color: #e8e8e9;
+  height: 30%;
+  background-color: #f9f9fb;
   box-shadow: 
     1.4px 1.4px 0 #FFD392, 
     1.7px 1.7px 0 #FFD392,
@@ -686,9 +686,53 @@ body, html {
   justify-content: center;
   align-items: center;
   gap: 1rem;
-  padding: 1rem;
+  padding: 2rem;
   border-radius: 10px;
   z-index: 10000;
+}
+
+.popup input[type="text"],
+.popup input[type="color"] {
+  width: 80%;
+  padding: 0.5rem;
+  border: 1px solid var(--foreground);
+  border-radius: 5px;
+  font-family: 'Bree Serif', serif;
+  box-shadow: 1.4px 1.4px 0 #FFD392;
+}
+
+.blur-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  z-index: 9999;
+}
+
+.close-button {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #202020;
+}
+
+.popup-submit-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--foreground);
+  color: #FFD392;
+  font-family: 'Bree Serif', serif;
+  cursor: pointer;
+  box-shadow: 1.4px 1.4px 0 #FFD392;
+  margin-top: 2rem;
 }
 
 .time-left-widget {
@@ -767,21 +811,16 @@ body, html {
   border-bottom: none;
 }
 
-.schedule-container {
-  width: 77.5%;
-  height: 82.5%;
-  overflow-y: scroll;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid var(--foreground);
-  border-radius: 5px;
-  scrollbar-width: none ;
-  box-shadow: 
-    6.4px 6.4px 0 #FFD392;
-  background-color: transparent;
-  left: 21.25%;
-  top: 14.5%;
-  position: absolute;
+.task-popup {
+  height: 30%;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.scroll-content {
+  text-align: center;
+  font-family: 'Bree Serif', serif;
+  color: #202020;
 }
 
 .week-divider {
@@ -793,5 +832,48 @@ body, html {
   z-index: 1;
   box-shadow: 
     0.5px 0.5px 0 #FFD392;
+}
+
+.schedule-container {
+  width: 77.5%;
+  height: 82.5%;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--foreground);
+  border-radius: 5px;
+  scrollbar-width: none ;
+  box-shadow: 
+    6.4px 6.4px 0 #FFD392;
+  background-color: #f9f9fb;
+  left: 21.25%;
+  top: 14.5%;
+  position: absolute;
+  z-index: 1;
+}
+
+.tabs-container {
+  position: absolute;
+  top: 13.5%;
+  left: 33.58%;
+  width: 77.5%;
+  display: flex;
+  justify-content: space-between;
+  z-index: 0;
+}
+
+.tabs {
+  position: absolute;
+  background-color: transparent;
+  transform: translateX(-50%);
+  color: #202020;
+  z-index: 0;
+  border: 1px solid var(--foreground);
+  border-radius: 5px;
+  padding: 0.3rem 2rem;
+  font-family: 'Bree Serif', serif;
+  text-align: center;
+  box-shadow: 
+        2.4px 0 0 #FFD392;
 }
 
