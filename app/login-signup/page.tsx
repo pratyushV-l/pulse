@@ -81,7 +81,7 @@ export default function LoginSignup() {
           <img src="/logo.png" width={50} height={50} alt="logo" style={{ position: "absolute", left: "69%", top: "8.5%"}}/>
           <h1 className="title-2">{isSignUp ? 'Sign-Up' : 'Login'}</h1>
         </div>
-        <div style={{ position: "absolute", left: '58%', top:"22.5%"}} className="authentication-container">
+        <div style={{ position: "absolute", left: '58%', top:"25%"}} className="authentication-container">
           <input
             type="email"
             placeholder="Email"

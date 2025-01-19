@@ -49,7 +49,7 @@ export default function Home() {
   return (
     <div>
       {loading && <Loading />}
-      <div className="background" style={{ position: "relative", width: "100%", height: "100vh"}}>
+      <div className="background-2" style={{ position: "relative", width: "100%", height: "100vh"}}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", position: "absolute", width: "100%", height: "10%", zIndex: 1, padding: "0 20px" }}>
           <div style={{ display: "flex", alignItems: "center" }}>
             <Image src='/logo.png' width={50} height={50} quality={100} alt="logo"/>
