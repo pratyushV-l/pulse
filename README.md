@@ -1,36 +1,18 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# pULsE..
 
-## Getting Started
+Welcome to pulse, the ultimate AI powered timetable and schedule planner. Use it's extensive features, to help you stop wastng time on planning, and starting doing the things you wish to do.
 
-First, run the development server:
+Try it out at: https://www.pulsev1.me
+Youtube: https://www.youtube.com/watch?v=vclpqUPQ4C8
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features:
+ - AI Powered Task Generation
+ - Automatic Task Prioritization
+ - Manual Task Creation
+ - Manual Task Editing
+ - Tags to Sort your Tasks
+ - Week & Day Mode
+ - Beautifully Styled Workspace
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+ ## Footer
+ Pulse is a project made with over 33 hours of work, and hard dedication. This has all been provided to the open source community to help build a better product for the world!
