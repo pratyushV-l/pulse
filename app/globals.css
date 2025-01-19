@@ -426,7 +426,7 @@ body, html {
 .sign-log {
   position: absolute;
   top: 65%;
-  left: 75%;
+  left: 78%;
   transform: translate(-50%, -50%);
   font-size: 1.0em;
   font-family: 'Bree Serif', serif;
@@ -752,6 +752,59 @@ body, html {
   justify-content: center;
   align-items: center;
   text-align: center;
+}
+
+.authentication-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 40%;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.authentication-container input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--foreground);
+  border-radius: 5px;
+  font-family: 'Bree Serif', serif;
+  box-shadow: 1.4px 1.4px 0 #FFD392;
+  background-color: transparent;
+  color: var(--foreground);
+}
+
+.authentication-container button {
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--foreground);
+  color: #FFD392;
+  font-family: 'Bree Serif', serif;
+  cursor: pointer;
+  box-shadow: 1.4px 1.4px 0 #FFD392;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.authentication-container button:hover {
+  background-color: #FFD392;
+  color: var(--foreground);
+}
+
+.authentication-container p {
+  font-family: 'Bree Serif', serif;
+  color: var(--foreground);
+  cursor: pointer;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.authentication-container p:hover {
+  text-decoration: underline;
 }
 
 .popup-submit-button {
