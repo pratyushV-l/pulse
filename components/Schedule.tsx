@@ -14,7 +14,7 @@ const generateTimeSlots = () => {
 
 const parseTime = (timeString: string) => {
     const [time, modifier] = timeString.split(' ');
-     [hours, minutes] = time.split(':').map(Number);
+    let [hours, minutes] = time.split(':').map(Number);
 
     if (modifier === "PM" && hours !== 12) {
         hours += 12;
