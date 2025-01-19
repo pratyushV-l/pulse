@@ -149,7 +149,7 @@ const Schedule = ({ mode, selectedDate, tasks, tags, onTaskComplete, onEditTask 
                             }}
                             onClick={() => handleTaskClick(task)}
                         >
-                            <button onClick={() => onTaskComplete(task.id)} className="complete-task-button">✔</button>
+                            <button onClick={(e) => { e.stopPropagation(); onTaskComplete(task.id); }} className="complete-task-button">✔</button>
                             {task["task name"]}
                         </div>
                     );
@@ -191,7 +191,7 @@ const Schedule = ({ mode, selectedDate, tasks, tags, onTaskComplete, onEditTask 
                                 }}
                                 onClick={() => handleTaskClick(task)}
                             >
-                                <button onClick={() => onTaskComplete(task.id)} className="complete-task-button">✔</button>
+                                <button onClick={(e) => { e.stopPropagation(); onTaskComplete(task.id); }} className="complete-task-button">✔</button>
                                 {task["task name"]}
                             </div>
                         );
