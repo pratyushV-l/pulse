@@ -47,6 +47,8 @@ export default function HomePage() {
     const [showMoreOptions, setShowMoreOptions] = useState(false);
     const [showEditTaskPopup, setShowEditTaskPopup] = useState(false);
     const [editTask, setEditTask] = useState<Task | null>(null);
+    const [showTutorial, setShowTutorial] = useState(false);
+    const [currentSlide, setCurrentSlide] = useState(0);
 
     interface Task {
         id: string;
@@ -65,6 +67,11 @@ export default function HomePage() {
         if (savedMode) {
             setMode(savedMode);
         }
+
+        const tutorialCompleted = Cookies.get("tutorialCompleted");
+        if (!tutorialCompleted) {
+            setShowTutorial(true);
+        } 
     }, []);
 
     useEffect(() => {
@@ -130,6 +137,28 @@ export default function HomePage() {
         setShowEditTaskPopup(false);
         setEditTask(null);
     }
+
+    const handleNextSlide = () => {
+        if (currentSlide <4) {
+            setCurrentSlide(currentSlide + 1);
+        } else {
+            setShowTutorial(false);
+            Cookies.set("tutorialCompleted", "true");
+        }
+    };
+
+    const handleKeyPress = (event: KeyboardEvent) => {
+        if (event.key === " " && showTutorial) {
+            handleNextSlide();
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener("keydown", handleKeyPress);
+        return () => {
+            window.removeEventListener("keydown", handleKeyPress);
+        };
+    }, [currentSlide, showTutorial]);
 
     const handleSubmitEditTask = () => {
     if (editTask) {
@@ -331,6 +360,20 @@ export default function HomePage() {
                     <span>New Task</span>
                 </div>
             </button>
+            {showTutorial && (
+                <>
+                    <div className="blur-background"></div>
+                    <div className="popup tutorial-popup" onClick={handleNextSlide}>
+                        <div className="tutorial-content">
+                            {currentSlide === 0 && <p>Welcome to Pulse. The place where you get things done.</p>}
+                            {currentSlide === 1 && <p>Pulse is an open source project by pratyushv-l</p>}
+                            {currentSlide === 2 && <p>Click on Add Task Buttons to Add Tasks, using natural language, through the power of AI.</p>}
+                            {currentSlide === 3 && <p>You can also add tags, so that AI can automatically sort your tasks and events into there own baskets.</p>}
+                            {currentSlide === 4 && <p>There are also a bunch more features, but I believe doing is learning. So get out there, and start doing!</p>}
+                        </div>
+                    </div>
+                </>
+            )}
             {showTaskPopup && (
                 <>
                     <div className="blur-background"></div>

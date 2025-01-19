@@ -318,6 +318,11 @@ body, html {
   clip-path: polygon(0 0, 70% 0, 0 100%);
 }
 
+.tutorial-content{
+  font-family: "Bree Serif", serif;
+  text-align: center;
+}
+
 .straight-line {
   position: relative;
 }
