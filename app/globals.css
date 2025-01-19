@@ -701,6 +701,22 @@ body, html {
   box-shadow: 1.4px 1.4px 0 #FFD392;
 }
 
+.popup input[type="date"],
+.popup input[type="time"],
+.tag-input {
+  font-family: 'Bree Serif', serif;
+}
+
+.input-label {
+  font-family: 'Bree Serif', serif;
+}
+
+.popup-view-button {
+  position: absolute;
+  bottom: 5%;
+  font-family: 'Bree Serif', serif;
+}
+
 .blur-background {
   position: fixed;
   top: 0;
@@ -732,7 +748,8 @@ body, html {
   font-family: 'Bree Serif', serif;
   cursor: pointer;
   box-shadow: 1.4px 1.4px 0 #FFD392;
-  margin-top: 2rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .time-left-widget {
@@ -812,9 +829,13 @@ body, html {
 }
 
 .task-popup {
-  height: 30%;
+  height: 50%;
   overflow-y: auto;
   scrollbar-width: none;
+}
+
+.duration{
+  width: 50% !important;
 }
 
 .scroll-content {

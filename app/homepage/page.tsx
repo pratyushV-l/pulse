@@ -35,6 +35,11 @@ export default function HomePage() {
     const [newTagColor, setNewTagColor] = useState(getRandomBrightColor());
     const [showTaskPopup, setShowTaskPopup] = useState(false);
     const [newTaskName, setNewTaskName] = useState("");
+    const [taskDate, setTaskDate] = useState("");
+    const [taskStartTime, setTaskStartTime] = useState("");
+    const [taskDuration, setTaskDuration] = useState("");
+    const [selectedTag, setSelectedTag] = useState(tags[0].name);
+    const [showMoreOptions, setShowMoreOptions] = useState(false);
 
     useEffect(() => {
         const savedMode = Cookies.get("mode");
@@ -100,6 +105,16 @@ export default function HomePage() {
     const handleSubmitTask = () => {
         setShowTaskPopup(false);
         setNewTaskName("");
+        setTaskDate("");
+        setTaskStartTime("");
+        setTaskDuration("");
+        setSelectedTag(tags[0].name);
+        setShowMoreOptions(false);
+    }
+
+    const handleCloseTaskPopup = () => {
+        setShowTaskPopup(false);
+        setShowMoreOptions(false);
     }
 
     return (
@@ -155,12 +170,33 @@ export default function HomePage() {
                 <>
                     <div className="blur-background"></div>
                     <div className="popup task-popup">
-                        <button className="close-button" onClick={() => setShowTaskPopup(false)}>✖</button>
+                        <button className="close-button" onClick={handleCloseTaskPopup}>✖</button>
                         <input type="text" value={newTaskName} onChange={(e) => setNewTaskName(e.target.value)} placeholder="Enter Your Task" />
                         <button onClick={handleSubmitTask} disabled={!newTaskName.trim()} className="popup-submit-button">Add</button>
-                        <div className="scroll-content">
-                            <p>Add Later</p>
-                        </div>
+                        <button onClick={() => setShowMoreOptions(!showMoreOptions)} className="popup-view-button">
+                            {showMoreOptions ? "" : "View more options"}
+                        </button>
+                        {showMoreOptions && (
+                            <>
+                                <label className="input-label">
+                                    Date:ㅤ
+                                    <input type="date" value={taskDate} onChange={(e) => setTaskDate(e.target.value)} />
+                                </label>
+                                <label className="input-label">
+                                    Time:ㅤ
+                                    <input type="time" value={taskStartTime} onChange={(e) => setTaskStartTime(e.target.value)} />
+                                </label>
+                                <input type="text" className="duration" value={taskDuration} onChange={(e) => setTaskDuration(e.target.value)} placeholder="Duration" />
+                                <label className="input-label">
+                                    Tag:ㅤ
+                                    <select className="tag-input" value={selectedTag} onChange={(e) => setSelectedTag(e.target.value)}>
+                                        {tags.map((tag, index) => (
+                                            <option key={index} value={tag.name}>{tag.name}</option>
+                                        ))}
+                                    </select>
+                                </label>
+                            </>
+                        )}
                     </div>
                 </>
             )}
