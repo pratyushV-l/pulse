@@ -14,8 +14,7 @@ const generateTimeSlots = () => {
 
 const parseTime = (timeString: string) => {
     const [time, modifier] = timeString.split(' ');
-    let [hours, minutes] = time.split(':').map(Number);
-    const minutesConst = minutes;
+     [hours, minutes] = time.split(':').map(Number);
 
     if (modifier === "PM" && hours !== 12) {
         hours += 12;
@@ -24,7 +23,7 @@ const parseTime = (timeString: string) => {
         hours = 0;
     }
 
-    return { hours, minutes: minutesConst };
+    return { hours, minutes };
 };
 
 interface Task {
