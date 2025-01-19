@@ -1,11 +1,15 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import Calendar from "@/components/Calendar";
 import Image from "next/image";
 import Cookies from "js-cookie";
 import TimeLeftWidget from "@/components/TimeLeftWidget";
 import Schedule from "@/components/Schedule";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+const genAI = new GoogleGenerativeAI("AIzaSyDkyivo4KBcmjJN_ZB2qq7_1II34IAI_uk");
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 function getOrdinalSuffix(day: number) {
     if (day > 3 && day < 21) return 'th';
@@ -40,6 +44,7 @@ export default function HomePage() {
     const [taskDuration, setTaskDuration] = useState("");
     const [selectedTag, setSelectedTag] = useState(tags[0].name);
     const [showMoreOptions, setShowMoreOptions] = useState(false);
+    const [tasks, setTasks] = useState([]);
 
     useEffect(() => {
         const savedMode = Cookies.get("mode");
@@ -102,7 +107,30 @@ export default function HomePage() {
         setShowTaskPopup(true);
     }
 
-    const handleSubmitTask = () => {
+    const handleSubmitTask = async () => {
+        const currentDate = new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        });
+
+        const currentTime = new Date().toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+        });
+
+        const tagList = tags.map(tag => tag.name).join(", ");
+
+        const prompt = `Convert the following task description into a JSON object with the attributes: task name, start time (hh:mm am/pm), task duration (minutes), end time (hh:mm am/pm) (basically the start time plus duration), date (MM/DD/YY), and tag. If not enough information is provided on details regarding time, then adequately place it according to what you think is justifiable. Make sure end time is always the duration of minutes after start time. Make sure it is realistic and adequate for the task being described. For reference, the current date is ${currentDate} and the current time is ${currentTime} (in the local time zone). Sort the task into one of the following tags: ${tagList}. If there are no related tags, put it in the "Other" tag by default. Ensure the JSON object is valid and handles edge cases like tasks spanning midnight. Do not add comments. Task description: "${newTaskName}"`;
+
+        try {
+            const result = await model.generateContent(prompt);
+            console.log(result.response.text());
+        } catch (error) {
+            console.error("Error generating content:", error);
+        }
+
         setShowTaskPopup(false);
         setNewTaskName("");
         setTaskDate("");
