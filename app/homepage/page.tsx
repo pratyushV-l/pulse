@@ -7,6 +7,7 @@ import Cookies from "js-cookie";
 import TimeLeftWidget from "@/components/TimeLeftWidget";
 import Schedule from "@/components/Schedule";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { v4 as uuidv4 } from 'uuid';
 
 const genAI = new GoogleGenerativeAI("AIzaSyDkyivo4KBcmjJN_ZB2qq7_1II34IAI_uk");
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
@@ -45,6 +46,7 @@ export default function HomePage() {
     const [selectedTag, setSelectedTag] = useState(tags[0].name);
     const [showMoreOptions, setShowMoreOptions] = useState(false);
     interface Task {
+        id: string;
         taskName: string;
         startTime: string;
         taskDuration: number;
@@ -94,6 +96,12 @@ export default function HomePage() {
             setNewTagColor(getRandomBrightColor())
         }
     }
+
+    const handleTaskComplete = (id: string) => {
+        const updatedTasks = tasks.filter(task => task.id !== id);
+        setTasks(updatedTasks);
+        localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+    };
 
     const handleSubmitTag = () => {
         const otherTagIndex = tags.findIndex(tag => tag.name === "Other");
@@ -161,7 +169,7 @@ export default function HomePage() {
             "tag": task.tag
         }));
         
-        const prompt = `Convert the following task description into a JSON object with the attributes: task name, start time (hh:mm am/pm), task duration (minutes), end time (hh:mm am/pm) (basically the start time plus duration), date (MM/DD/YYYY), and tag. If not enough information is provided on details regarding time, then adequately place it according to what you think is justifiable. Make sure end time is always the duration of minutes after start time. Make sure it is realistic and adequate for the task being described. For reference, the current date is ${currentDate} and the current time is ${currentTime} (in the local time zone). Sort the task into one of the following tags: ${tagList}. If there are no related tags, put it in the "Other" tag by default. Ensure the JSON object is valid and handles edge cases like tasks spanning midnight. Do not add comments. Existing tasks: ${JSON.stringify(existingTasks)}. Make sure the new task does not overlap with any existing tasks. On the basis of task name, name it appropriately within 4 words maximum, capitalizing all words except minor words. Remember NEVER overlap two tasks, NEVER. Always don't let 2 tasks have the same start time at the same date, and make sure one task's duration is completely over before starting another one. Task description: "${newTaskName}"`;
+        const prompt = `Convert the following task description into a JSON object with the attributes: task name, start time (hh:mm am/pm), task duration (minutes), end time (hh:mm am/pm) (basically the start time plus duration), date (MM/DD/YYYY), and tag. If not enough information is provided on details regarding time, then adequately place it according to what you think is justifiable. Make sure end time is always the duration of minutes after start time. Make sure it is realistic and adequate for the task being described. For reference, the current date is ${currentDate} and the current time is ${currentTime} (in the local time zone). Sort the task into one of the following tags: ${tagList}. If there are no related tags, put it in the "Other" tag by default. Ensure the JSON object is valid and handles edge cases like tasks spanning midnight. Do not add comments. Existing tasks: ${JSON.stringify(existingTasks)}. Make sure the new task does not overlap with any existing tasks. On the basis of task name, name it appropriately within 4 words maximum, capitalizing all words except minor words. Remember NEVER overlap two tasks, NEVER. Always don't let 2 tasks have the same start time at the same date, and make sure one task's duration is completely over before starting another one. Always round off starting time and duration to the nearest 15 minutes. Task description: "${newTaskName}"`;
         
         try {
             const result = await model.generateContent(prompt);
@@ -170,6 +178,7 @@ export default function HomePage() {
             const jsonEndIndex = responseText.lastIndexOf('}') + 1;
             const jsonString = responseText.substring(jsonStartIndex, jsonEndIndex);
             const task = JSON.parse(jsonString);
+            task.id = uuidv4();
             setTasks(prevTasks => [...prevTasks, task]);
             console.log(jsonString);
             console.log("Task added:", task);
@@ -297,7 +306,7 @@ export default function HomePage() {
                         </div>
                     </>
                 )}
-            <Schedule mode={mode} selectedDate={selectedDate} tasks={tasks} tags={tags}/>
+            <Schedule mode={mode} selectedDate={selectedDate} tasks={tasks} tags={tags} onTaskComplete={handleTaskComplete}/>
             <TimeLeftWidget numTags={tags.length}/>
         </div>
     )

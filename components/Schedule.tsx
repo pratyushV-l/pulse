@@ -27,7 +27,7 @@ const parseTime = (timeString: string) => {
 
 };
 
-const Schedule = ({ mode, selectedDate, tasks, tags }: { mode: string, selectedDate: Date, tasks: any[], tags: any[] }) => {
+const Schedule = ({ mode, selectedDate, tasks, tags, onTaskComplete }: { mode: string, selectedDate: Date, tasks: any[], tags: any[], onTaskComplete: (id: string) => void }) => {
     const timeSlots = generateTimeSlots();
     const [currentTimePosition, setCurrentTimePosition] = useState(0);
     const currentTimeLineRef = useRef<HTMLDivElement>(null);
@@ -121,6 +121,7 @@ const Schedule = ({ mode, selectedDate, tasks, tags }: { mode: string, selectedD
                                 )`
                             }}
                         >
+                            <button onClick={() => onTaskComplete(task.id)} className="complete-task-button">✔</button>
                             {task["task name"]}
                         </div>
                     );
