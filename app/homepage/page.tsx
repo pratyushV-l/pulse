@@ -132,33 +132,43 @@ export default function HomePage() {
     }
 
     const handleSubmitEditTask = () => {
-        if (editTask) {
-            const formattedDate = new Date(editTask.date).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit'
-            });
-    
-            const formattedStartTime = new Date(`1970-01-01T${editTask.startTime}:00`).toLocaleTimeString('en-US', {
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: true
-            });
+    if (editTask) {
+        const formattedDate = new Date(editTask["date"]).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        });
 
-    
-            const updatedTask = {
-                ...editTask,
-                date: formattedDate,
-                startTime: formattedStartTime,
-            };
-    
-            const updatedTasks = tasks.map(task => task.id === editTask.id ? updatedTask : task);
-            setTasks(updatedTasks);
-            localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-            setShowEditTaskPopup(false);
-            setEditTask(null);
-        }
-    };
+        const formattedStartTime = new Date(`1970-01-01T${editTask.startTime}:00`).toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+        });
+
+        const [startHours, startMinutes] = formattedStartTime.split(/[: ]/).map((val, index) => index === 2 ? val : parseInt(val, 10));
+        const durationMinutes = editTask.taskDuration;
+        const endTime = new Date(1970, 0, 1, Number(startHours) + Math.floor(durationMinutes / 60), Number(startMinutes) + (durationMinutes % 60));
+        const formattedEndTime = endTime.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+        });
+
+        const updatedTask = {
+            ...editTask,
+            "date": formattedDate,
+            "start time": formattedStartTime,
+            "end time": formattedEndTime,
+            "task duration": durationMinutes,
+        };
+
+        const updatedTasks = tasks.map(task => task.id === editTask.id ? updatedTask : task);
+        setTasks(updatedTasks);
+        localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+        setShowEditTaskPopup(false);
+        setEditTask(null);
+    }
+};
 
     const day = selectedDate.getDate();
     const ordinalDay = `${day}${getOrdinalSuffix(day)}`;
