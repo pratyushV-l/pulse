@@ -27,7 +27,7 @@ const parseTime = (timeString: string) => {
 
 };
 
-const Schedule = ({ mode, selectedDate, tasks }: { mode: string, selectedDate: Date, tasks: any[] }) => {
+const Schedule = ({ mode, selectedDate, tasks, tags }: { mode: string, selectedDate: Date, tasks: any[], tags: any[] }) => {
     const timeSlots = generateTimeSlots();
     const [currentTimePosition, setCurrentTimePosition] = useState(0);
     const currentTimeLineRef = useRef<HTMLDivElement>(null);
@@ -98,8 +98,9 @@ const Schedule = ({ mode, selectedDate, tasks }: { mode: string, selectedDate: D
                     }
                     const { hours, minutes } = parseTime(task["start time"]);
                     const duration = parseInt(task["task duration"], 10);
-                    const top = (hours * 60 + minutes) / 598 * 100;
-                    const height = duration / 630 * 100;
+                    const top = (hours * 60 + minutes) / 600 * 100;
+                    const height = duration / 610 * 100;
+                    const tagColor = tags.find(tag => tag.name === task.tag)?.color || '#000';
 
                     return (
                         <div
@@ -109,7 +110,15 @@ const Schedule = ({ mode, selectedDate, tasks }: { mode: string, selectedDate: D
                                 position: 'absolute',
                                 top: `${top}%`,
                                 height: `${height}%`,
-                                boxSizing: 'border-box'
+                                boxSizing: 'border-box',
+                                borderColor: tagColor,
+                                background: `repeating-linear-gradient(
+                                    45deg,
+                                    ${tagColor}33,
+                                    ${tagColor}33 10px,
+                                    transparent 10px,
+                                    transparent 20px
+                                )`
                             }}
                         >
                             {task["task name"]}

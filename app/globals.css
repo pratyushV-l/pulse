@@ -741,7 +741,7 @@ body, html {
 
 .task {
   position: absolute;
-  border: 3px solid #000;
+  border: 3px solid;
   box-sizing: border-box;
   width: 91.67%;
   border-radius: 5px;

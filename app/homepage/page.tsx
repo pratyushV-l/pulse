@@ -77,6 +77,17 @@ export default function HomePage() {
         localStorage.setItem("tasks", JSON.stringify(tasks));
     }, [tasks]);
 
+    useEffect(() => {
+        const savedTags = localStorage.getItem("tags");
+        if (savedTags) {
+            setTags(JSON.parse(savedTags));
+        }
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem("tags", JSON.stringify(tags));
+    }, [tags]);
+
     const handleAddTag = () => {
         if (tags.length < 5) {
             setShowPopup(true);
@@ -141,9 +152,17 @@ export default function HomePage() {
         });
 
         const tagList = tags.map(tag => tag.name).join(", ");
-
-        const prompt = `Convert the following task description into a JSON object with the attributes: task name, start time (hh:mm am/pm), task duration (minutes), end time (hh:mm am/pm) (basically the start time plus duration), date (MM/DD/YYYY), and tag. If not enough information is provided on details regarding time, then adequately place it according to what you think is justifiable. Make sure end time is always the duration of minutes after start time. Make sure it is realistic and adequate for the task being described. For reference, the current date is ${currentDate} and the current time is ${currentTime} (in the local time zone). Sort the task into one of the following tags: ${tagList}. If there are no related tags, put it in the "Other" tag by default. Ensure the JSON object is valid and handles edge cases like tasks spanning midnight. Do not add comments. Task description: "${newTaskName}"`;
-
+        const existingTasks = tasks.map(task => ({
+            "task name": task.taskName,
+            "start time": task.startTime,
+            "task duration": task.taskDuration,
+            "end time": task.endTime,
+            "date": task.date,
+            "tag": task.tag
+        }));
+        
+        const prompt = `Convert the following task description into a JSON object with the attributes: task name, start time (hh:mm am/pm), task duration (minutes), end time (hh:mm am/pm) (basically the start time plus duration), date (MM/DD/YYYY), and tag. If not enough information is provided on details regarding time, then adequately place it according to what you think is justifiable. Make sure end time is always the duration of minutes after start time. Make sure it is realistic and adequate for the task being described. For reference, the current date is ${currentDate} and the current time is ${currentTime} (in the local time zone). Sort the task into one of the following tags: ${tagList}. If there are no related tags, put it in the "Other" tag by default. Ensure the JSON object is valid and handles edge cases like tasks spanning midnight. Do not add comments. Existing tasks: ${JSON.stringify(existingTasks)}. Make sure the new task does not overlap with any existing tasks. On the basis of task name, name it appropriately within 4 words maximum, capitalizing all words except minor words. Remember NEVER overlap two tasks, NEVER. Always don't let 2 tasks have the same start time at the same date, and make sure one task's duration is completely over before starting another one. Task description: "${newTaskName}"`;
+        
         try {
             const result = await model.generateContent(prompt);
             const responseText = result.response.text();
@@ -278,7 +297,7 @@ export default function HomePage() {
                         </div>
                     </>
                 )}
-            <Schedule mode={mode} selectedDate={selectedDate} tasks={tasks}/>
+            <Schedule mode={mode} selectedDate={selectedDate} tasks={tasks} tags={tags}/>
             <TimeLeftWidget numTags={tags.length}/>
         </div>
     )
