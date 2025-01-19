@@ -12,7 +12,22 @@ const generateTimeSlots = () => {
     return slots;
 };
 
-const Schedule = ({ mode, selectedDate }: { mode: string, selectedDate: Date }) => {
+const parseTime = (timeString: string) => {
+    const [time, modifier] = timeString.split(' ');
+    let [hours, minutes] = time.split(':').map(Number);
+
+    if (modifier === "PM" && hours !== 12) {
+        hours += 12;
+    }
+    if (modifier === "AM" && hours === 12) {
+        hours = 0;
+    }
+
+    return { hours, minutes };
+
+};
+
+const Schedule = ({ mode, selectedDate, tasks }: { mode: string, selectedDate: Date, tasks: any[] }) => {
     const timeSlots = generateTimeSlots();
     const [currentTimePosition, setCurrentTimePosition] = useState(0);
     const currentTimeLineRef = useRef<HTMLDivElement>(null);
@@ -55,9 +70,20 @@ const Schedule = ({ mode, selectedDate }: { mode: string, selectedDate: Date }) 
     const containerHeight = mode === "Week" ? "80%" : "82.5%";
     const containerTop = mode === "Week" ? "17.5%" : "15%";
 
+    const tasksDate = (selectedDate.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+    })).toString();
+    
+    const filteredTasks = tasks.filter(task => task.date === tasksDate);
+
+    console.log(filteredTasks)
+    console.log(tasksDate)
+
     return (
         <div className="schedule-wrapper">
-            {mode==="Week" && <Tabs selectedDate={selectedDate} />}
+            {mode === "Week" && <Tabs selectedDate={selectedDate} />}
             <div className="schedule-container" ref={scheduleContainerRef} style={{ height: containerHeight, top: containerTop }}>
                 {timeSlots.map((slot, index) => (
                     <div key={index} className="time-slot">
@@ -65,6 +91,31 @@ const Schedule = ({ mode, selectedDate }: { mode: string, selectedDate: Date }) 
                     </div>
                 ))}
                 <div className="current-time-line" ref={currentTimeLineRef} style={{ top: `calc(${currentTimePosition}% * 2.4)` }}></div>
+                {mode === "Day" && filteredTasks.map((task, index) => {
+                    if (!task["start time"]) {
+                        console.error("Task missing start time:", task);
+                        return null;
+                    }
+                    const { hours, minutes } = parseTime(task["start time"]);
+                    const duration = parseInt(task["task duration"], 10);
+                    const top = (hours * 60 + minutes) / 598 * 100;
+                    const height = duration / 630 * 100;
+
+                    return (
+                        <div
+                            key={index}
+                            className="task"
+                            style={{
+                                position: 'absolute',
+                                top: `${top}%`,
+                                height: `${height}%`,
+                                boxSizing: 'border-box'
+                            }}
+                        >
+                            {task["task name"]}
+                        </div>
+                    );
+                })}
                 {mode === "Week" && (
                     <>
                         <div className="week-divider" style={{ left: '26.26%', height: "250%" }}></div>

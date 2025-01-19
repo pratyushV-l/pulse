@@ -44,7 +44,16 @@ export default function HomePage() {
     const [taskDuration, setTaskDuration] = useState("");
     const [selectedTag, setSelectedTag] = useState(tags[0].name);
     const [showMoreOptions, setShowMoreOptions] = useState(false);
-    const [tasks, setTasks] = useState([]);
+    interface Task {
+        taskName: string;
+        startTime: string;
+        taskDuration: number;
+        endTime: string;
+        date: string;
+        tag: string;
+    }
+
+    const [tasks, setTasks] = useState<Task[]>([]);
 
     useEffect(() => {
         const savedMode = Cookies.get("mode");
@@ -56,6 +65,17 @@ export default function HomePage() {
     useEffect(() => {
         Cookies.set("mode", mode);
     }, [mode]);
+
+    useEffect(() => {
+        const savedTasks = localStorage.getItem("tasks");
+        if (savedTasks) {
+            setTasks(JSON.parse(savedTasks));
+        }
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+    }, [tasks]);
 
     const handleAddTag = () => {
         if (tags.length < 5) {
@@ -122,11 +142,18 @@ export default function HomePage() {
 
         const tagList = tags.map(tag => tag.name).join(", ");
 
-        const prompt = `Convert the following task description into a JSON object with the attributes: task name, start time (hh:mm am/pm), task duration (minutes), end time (hh:mm am/pm) (basically the start time plus duration), date (MM/DD/YY), and tag. If not enough information is provided on details regarding time, then adequately place it according to what you think is justifiable. Make sure end time is always the duration of minutes after start time. Make sure it is realistic and adequate for the task being described. For reference, the current date is ${currentDate} and the current time is ${currentTime} (in the local time zone). Sort the task into one of the following tags: ${tagList}. If there are no related tags, put it in the "Other" tag by default. Ensure the JSON object is valid and handles edge cases like tasks spanning midnight. Do not add comments. Task description: "${newTaskName}"`;
+        const prompt = `Convert the following task description into a JSON object with the attributes: task name, start time (hh:mm am/pm), task duration (minutes), end time (hh:mm am/pm) (basically the start time plus duration), date (MM/DD/YYYY), and tag. If not enough information is provided on details regarding time, then adequately place it according to what you think is justifiable. Make sure end time is always the duration of minutes after start time. Make sure it is realistic and adequate for the task being described. For reference, the current date is ${currentDate} and the current time is ${currentTime} (in the local time zone). Sort the task into one of the following tags: ${tagList}. If there are no related tags, put it in the "Other" tag by default. Ensure the JSON object is valid and handles edge cases like tasks spanning midnight. Do not add comments. Task description: "${newTaskName}"`;
 
         try {
             const result = await model.generateContent(prompt);
-            console.log(result.response.text());
+            const responseText = result.response.text();
+            const jsonStartIndex = responseText.indexOf('{');
+            const jsonEndIndex = responseText.lastIndexOf('}') + 1;
+            const jsonString = responseText.substring(jsonStartIndex, jsonEndIndex);
+            const task = JSON.parse(jsonString);
+            setTasks(prevTasks => [...prevTasks, task]);
+            console.log(jsonString);
+            console.log("Task added:", task);
         } catch (error) {
             console.error("Error generating content:", error);
         }
@@ -251,7 +278,7 @@ export default function HomePage() {
                         </div>
                     </>
                 )}
-            <Schedule mode={mode} selectedDate={selectedDate}/>
+            <Schedule mode={mode} selectedDate={selectedDate} tasks={tasks}/>
             <TimeLeftWidget numTags={tags.length}/>
         </div>
     )

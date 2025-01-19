@@ -739,6 +739,21 @@ body, html {
   color: #202020;
 }
 
+.task {
+  position: absolute;
+  border: 3px solid #000;
+  box-sizing: border-box;
+  width: 91.67%;
+  border-radius: 5px;
+  font-family: "Bree Serif", serif;
+  left: 7.82%;
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
 .popup-submit-button {
   padding: 0.5rem 1rem;
   border: none;
