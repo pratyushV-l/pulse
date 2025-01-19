@@ -45,6 +45,9 @@ export default function HomePage() {
     const [taskDuration, setTaskDuration] = useState("");
     const [selectedTag, setSelectedTag] = useState(tags[0].name);
     const [showMoreOptions, setShowMoreOptions] = useState(false);
+    const [showEditTaskPopup, setShowEditTaskPopup] = useState(false);
+    const [editTask, setEditTask] = useState<Task | null>(null);
+
     interface Task {
         id: string;
         taskName: string;
@@ -117,6 +120,46 @@ export default function HomePage() {
         setTags(tags.filter((_, i) => i !== index));
     }
 
+    const handleEditTask = (task: Task) => {
+        setEditTask({ ...task });
+        setShowEditTaskPopup(true);
+        console.log("Editing task:", task);
+    };
+
+    const handleCloseEditTaskPopup = () => {
+        setShowEditTaskPopup(false);
+        setEditTask(null);
+    }
+
+    const handleSubmitEditTask = () => {
+        if (editTask) {
+            const formattedDate = new Date(editTask.date).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            });
+    
+            const formattedStartTime = new Date(`1970-01-01T${editTask.startTime}:00`).toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
+            });
+
+    
+            const updatedTask = {
+                ...editTask,
+                date: formattedDate,
+                startTime: formattedStartTime,
+            };
+    
+            const updatedTasks = tasks.map(task => task.id === editTask.id ? updatedTask : task);
+            setTasks(updatedTasks);
+            localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+            setShowEditTaskPopup(false);
+            setEditTask(null);
+        }
+    };
+
     const day = selectedDate.getDate();
     const ordinalDay = `${day}${getOrdinalSuffix(day)}`;
     const weekday = selectedDate.toLocaleDateString('en-US', { weekday: 'short' });
@@ -144,6 +187,7 @@ export default function HomePage() {
 
     const handleAddTask = () => {
         setShowTaskPopup(true);
+        setSelectedTag("Other");
     }
 
     const handleSubmitTask = async () => {
@@ -169,7 +213,7 @@ export default function HomePage() {
             "tag": task.tag
         }));
         
-        const prompt = `Convert the following task description into a JSON object with the attributes: task name, start time (hh:mm am/pm), task duration (minutes), end time (hh:mm am/pm) (basically the start time plus duration), date (MM/DD/YYYY), and tag. If not enough information is provided on details regarding time, then adequately place it according to what you think is justifiable. Make sure end time is always the duration of minutes after start time. Make sure it is realistic and adequate for the task being described. For reference, the current date is ${currentDate} and the current time is ${currentTime} (in the local time zone). Sort the task into one of the following tags: ${tagList}. If there are no related tags, put it in the "Other" tag by default. Ensure the JSON object is valid and handles edge cases like tasks spanning midnight. Do not add comments. Existing tasks: ${JSON.stringify(existingTasks)}. Make sure the new task does not overlap with any existing tasks. On the basis of task name, name it appropriately within 4 words maximum, capitalizing all words except minor words. Remember NEVER overlap two tasks, NEVER. Always don't let 2 tasks have the same start time at the same date, and make sure one task's duration is completely over before starting another one. Always round off starting time and duration to the nearest 15 minutes. Task description: "${newTaskName}"`;
+        const prompt = `Convert the following task description into a JSON object with the attributes: task name, start time (hh:mm am/pm), task duration (minutes), end time (hh:mm am/pm) (basically the start time plus duration), date (MM/DD/YYYY), and tag. If not enough information is provided on details regarding time, then adequately place it according to what you think is justifiable. Default the date to today, unless explicitly or implictly said otherwise. Make sure end time is always the duration of minutes after start time. Make sure it is realistic and adequate for the task being described. For reference, the current date is ${currentDate} and the current time is ${currentTime} (in the local time zone). Sort the task into one of the following tags: ${tagList}. If there are no related tags, put it in the "Other" tag by default. Ensure the JSON object is valid and handles edge cases like tasks spanning midnight. Do not add comments. Existing tasks: ${JSON.stringify(existingTasks)}. Make sure the new task does not overlap with any existing tasks. On the basis of task name, name it appropriately within 4 words maximum, capitalizing all words except minor words. Remember NEVER overlap two tasks, NEVER. Always don't let 2 tasks have the same start time at the same date, and make sure one task's duration is completely over before starting another one. Always round off starting time and duration to the nearest 30 minutes. Task description: "${newTaskName}"`;
         
         try {
             const result = await model.generateContent(prompt);
@@ -179,6 +223,34 @@ export default function HomePage() {
             const jsonString = responseText.substring(jsonStartIndex, jsonEndIndex);
             const task = JSON.parse(jsonString);
             task.id = uuidv4();
+
+            if (taskDate) {
+                task.date = new Date(taskDate).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit'
+                });
+            }
+            if (taskStartTime) {
+                task["start time"] = new Date(`1970-01-01T${taskStartTime}:00`).toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                });
+            }
+            if (taskDuration) {
+                task["task duration"] = parseInt(taskDuration, 10);
+                const [hours, minutes] = task["start time"].split(/[:]/).map(Number);
+                const endTime = new Date(1970, 0, 1, hours + Math.floor(task["task duration"] / 60), minutes + (task["task duration"] % 60));
+                task["end time"] = endTime.toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                });
+            }
+            if (selectedTag !== "Other") {
+                task.tag = selectedTag;
+            }
             setTasks(prevTasks => [...prevTasks, task]);
             console.log(jsonString);
             console.log("Task added:", task);
@@ -269,7 +341,10 @@ export default function HomePage() {
                                     Time:ㅤ
                                     <input type="time" value={taskStartTime} onChange={(e) => setTaskStartTime(e.target.value)} />
                                 </label>
-                                <input type="text" className="duration" value={taskDuration} onChange={(e) => setTaskDuration(e.target.value)} placeholder="Duration" />
+                                <label className="input-label">
+                                    Duration:ㅤ
+                                    <input type="number" className="duration" value={taskDuration} onChange={(e) => setTaskDuration(e.target.value)} step="15" min="0" placeholder="Duration" />
+                                </label>
                                 <label className="input-label">
                                     Tag:ㅤ
                                     <select className="tag-input" value={selectedTag} onChange={(e) => setSelectedTag(e.target.value)}>
@@ -280,6 +355,35 @@ export default function HomePage() {
                                 </label>
                             </>
                         )}
+                    </div>
+                </>
+            )}
+            {showEditTaskPopup && editTask && (
+                <>
+                    <div className="blur-background"></div>
+                    <div className="popup task-popup">
+                        <button className="close-button" onClick={handleCloseEditTaskPopup}>✖</button>
+                        <label className="input-label">
+                            Date:ㅤ
+                            <input type="date" value={editTask.date} onChange={(e) => setEditTask({ ...editTask, date: e.target.value })} />
+                        </label>
+                        <label className="input-label">
+                            Time:ㅤ
+                            <input type="time" value={editTask.startTime} onChange={(e) => setEditTask({ ...editTask, startTime: e.target.value })} />
+                        </label>
+                        <label className="input-label">
+                            Duration:ㅤ
+                            <input type="number" className="duration" value={editTask.taskDuration} onChange={(e) => setEditTask({ ...editTask, taskDuration: parseInt(e.target.value, 10) })} step="15" min="0" placeholder="Duration" />
+                        </label>
+                        <label className="input-label">
+                            Tag:ㅤ
+                            <select className="tag-input" value={editTask.tag} onChange={(e) => setEditTask({ ...editTask, tag: e.target.value })}>
+                                {tags.map((tag, index) => (
+                                    <option key={index} value={tag.name}>{tag.name}</option>
+                                ))}
+                            </select>
+                        </label>
+                        <button onClick={handleSubmitEditTask} className="popup-submit-button">Save</button>
                     </div>
                 </>
             )}
@@ -306,7 +410,7 @@ export default function HomePage() {
                         </div>
                     </>
                 )}
-            <Schedule mode={mode} selectedDate={selectedDate} tasks={tasks} tags={tags} onTaskComplete={handleTaskComplete}/>
+            <Schedule mode={mode} selectedDate={selectedDate} tasks={tasks} tags={tags} onTaskComplete={handleTaskComplete} onEditTask={handleEditTask}/>
             <TimeLeftWidget numTags={tags.length}/>
         </div>
     )

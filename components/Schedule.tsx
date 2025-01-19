@@ -24,15 +24,24 @@ const parseTime = (timeString: string) => {
     }
 
     return { hours, minutes };
-
 };
 
-const Schedule = ({ mode, selectedDate, tasks, tags, onTaskComplete }: { mode: string, selectedDate: Date, tasks: any[], tags: any[], onTaskComplete: (id: string) => void }) => {
+interface Task {
+    id: string;
+    taskName: string;
+    startTime: string;
+    taskDuration: number;
+    endTime: string;
+    date: string;
+    tag: string;
+}
+
+const Schedule = ({ mode, selectedDate, tasks, tags, onTaskComplete, onEditTask }: { mode: string, selectedDate: Date, tasks: any[], tags: any[], onTaskComplete: (id: string) => void, onEditTask: (task: Task) => void }) => {
     const timeSlots = generateTimeSlots();
     const [currentTimePosition, setCurrentTimePosition] = useState(0);
     const currentTimeLineRef = useRef<HTMLDivElement>(null);
     const scheduleContainerRef = useRef<HTMLDivElement>(null);
-
+    
     const scrollToCurrentTime = () => {
         if (currentTimeLineRef.current && scheduleContainerRef.current) {
             const currentTimeLineElement = currentTimeLineRef.current;
@@ -45,6 +54,11 @@ const Schedule = ({ mode, selectedDate, tasks, tags, onTaskComplete }: { mode: s
                 behavior: 'smooth'
             });
         }
+    };
+
+    const handleTaskClick = (task: Task) => {
+        console.log("Task clicked:", task);
+        onEditTask(task);
     };
 
     useEffect(() => {
@@ -78,8 +92,21 @@ const Schedule = ({ mode, selectedDate, tasks, tags, onTaskComplete }: { mode: s
     
     const filteredTasks = tasks.filter(task => task.date === tasksDate);
 
-    console.log(filteredTasks)
-    console.log(tasksDate)
+    const getNextFiveDates = (date: Date) => {
+        const dates = [];
+        for (let i = 0; i < 5; i++) {
+            const currentDate = new Date(date);
+            currentDate.setDate(date.getDate() + i);
+            dates.push(currentDate.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            }));
+        }
+        return dates;
+    };
+
+    const weekDates = getNextFiveDates(selectedDate);
 
     return (
         <div className="schedule-wrapper">
@@ -120,18 +147,62 @@ const Schedule = ({ mode, selectedDate, tasks, tags, onTaskComplete }: { mode: s
                                     transparent 20px
                                 )`
                             }}
+                            onClick={() => handleTaskClick(task)}
                         >
                             <button onClick={() => onTaskComplete(task.id)} className="complete-task-button">✔</button>
                             {task["task name"]}
                         </div>
                     );
                 })}
+                {mode === "Week" && weekDates.map((date, dayIndex) => {
+                    const dayTasks = tasks.filter(task => task.date === date);
+                    const dayLeft = `${dayIndex * 18.74 + 7.85}%`; // Adjust the left position for each day
+
+                    return dayTasks.map((task, index) => {
+                        if (!task["start time"]) {
+                            console.error("Task missing start time:", task);
+                            return null;
+                        }
+                        const { hours, minutes } = parseTime(task["start time"]);
+                        const duration = parseInt(task["task duration"], 10);
+                        const top = (hours * 60 + minutes) / 600 * 100;
+                        const height = duration / 610 * 100;
+                        const tagColor = tags.find(tag => tag.name === task.tag)?.color || '#000';
+
+                        return (
+                            <div
+                                key={index}
+                                className="task"
+                                style={{
+                                    position: 'absolute',
+                                    top: `${top}%`,
+                                    height: `${height}%`,
+                                    left: dayLeft,
+                                    width: '17.28%', // Adjust the width for each day
+                                    boxSizing: 'border-box',
+                                    borderColor: tagColor,
+                                    background: `repeating-linear-gradient(
+                                        45deg,
+                                        ${tagColor}33,
+                                        ${tagColor}33 10px,
+                                        transparent 10px,
+                                        transparent 20px
+                                    )`
+                                }}
+                                onClick={() => handleTaskClick(task)}
+                            >
+                                <button onClick={() => onTaskComplete(task.id)} className="complete-task-button">✔</button>
+                                {task["task name"]}
+                            </div>
+                        );
+                    });
+                })}
                 {mode === "Week" && (
                     <>
-                        <div className="week-divider" style={{ left: '26.26%', height: "250%" }}></div>
-                        <div className="week-divider" style={{ left: '44.70%', height: "250%" }}></div>
+                        <div className="week-divider" style={{ left: '25.76%', height: "250%" }}></div>
+                        <div className="week-divider" style={{ left: '44.50%', height: "250%", width: "0.5px" }}></div>
                         <div className="week-divider" style={{ left: '63.13%', height: "250%", width: "0.5px" }}></div>
-                        <div className="week-divider" style={{ left: '81.57%', height: "250%" }}></div>
+                        <div className="week-divider" style={{ left: '82.07%', height: "250%" }}></div>
                     </>
                 )}
             </div>
